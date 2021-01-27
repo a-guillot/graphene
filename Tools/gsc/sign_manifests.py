@@ -9,9 +9,19 @@ import subprocess
 import argparse
 
 def generate_signature(exec_):
+
+    print('X Dry run of graphene-sign-sgx to see the help')
     sign_process = subprocess.Popen([
         '/graphene/python/graphene-sgx-sign',
-        '-exec', exec_,
+        '-h'
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=os.environ.update({'PYTHONDONTWRITEBYTECODE':'1'}))
+
+    print('X Trying the execution without passing exec as a command, but only as part of the output and the manifest')
+    sign_process = subprocess.Popen([
+        '/graphene/python/graphene-sgx-sign',
         '-libpal', '/graphene/Runtime/libpal-Linux-SGX.so',
         '-key', '/gsc-signer-key.pem',
         '-output', f'{exec_}.manifest.sgx',
@@ -55,6 +65,7 @@ def main(args=None):
     print('Signing manifests:')
 
     sig_order_file = args.signing_order
+
     if not os.path.exists(sig_order_file):
         print(f'Failed to generate signatures, since image misses {sig_order_file}.')
 
@@ -63,6 +74,7 @@ def main(args=None):
     # signature_order.txt.
     with open(sig_order_file, 'r') as sig_order:
         executables = sig_order.read().splitlines()
+        print(f'X Executables: {executables}')
         for executable in executables:
             generate_signature(executable)
 
