@@ -1,0 +1,34 @@
+Step 1/7 : FROM gsc-python-unsigned as unsigned_image
+
+ ---> 86d9b7dea6e4
+Step 2/7 : COPY gsc-signer-key.pem /gsc-signer-key.pem
+
+ ---> Using cache
+ ---> a892451b9306
+Step 3/7 : RUN python3 -B sign_manifests.py signing_order.txt
+
+ ---> Running in 41824364ee48
+Signing manifests:
+X Executables: ['python3']
+X Dry run of graphene-sign-sgx to see the help
+X Trying the execution without passing exec as a command, but only as part of the output and the manifest
+	python3
+Removing intermediate container 41824364ee48
+ ---> 74adbf934f9b
+Step 4/7 : FROM gsc-python-unsigned
+
+ ---> 86d9b7dea6e4
+Step 5/7 : COPY --from=unsigned_image /*.sig ./
+
+ ---> b2845394e35f
+Step 6/7 : COPY --from=unsigned_image /*.sgx ./
+
+ ---> 64844dbfb09c
+Step 7/7 : RUN rm signing_order.txt sign_manifests.py /graphene/python/graphene-sgx-sign /graphene/python/graphenelibos/sgx_sign.py
+
+ ---> Running in 1cb5b5d8bfb8
+Removing intermediate container 1cb5b5d8bfb8
+ ---> 70186e204518
+Successfully built 70186e204518
+Successfully tagged gsc-python:latest
+Successfully signed docker image gsc-python-unsigned into docker image gsc-python.

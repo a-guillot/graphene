@@ -1,0 +1,20 @@
++ [ -z  ]
++ GSC_PAL=Linux-SGX
++ executable=python3
++ /graphene/python/graphene-sgx-get-token -output python3.token -sig python3.sig
+Attributes:
+    mr_enclave:  069b46bbf7fc98512cd5c7773d319006727e7db211d1c47c52ebf5e3b7d67d56
+    mr_signer:   0ea28e52613c1468367024e21d2d4b323f5abb93fa3a48a92ffca5f55821d265
+    isv_prod_id: 0
+    isv_svn:     0
+    attr.flags:  0600000000000000
+    attr.xfrm:   1f00000000000000
+    misc_select: 00000000
+    misc_mask:   00000000
+    modulus:     71e05b4ca8b2ce48fe351991c3db2031...
+    exponent:    3
+    signature:   89b5140c9ef09806413e57daa9b5691c...
+    date:        2021-01-27
++ /graphene/Runtime/pal-Linux-SGX /graphene/Runtime/libpal-Linux-SGX.so init python3 -c print("HelloWorld!")
+Initializing enclave failed: 1
+load_enclave() failed with error -1
